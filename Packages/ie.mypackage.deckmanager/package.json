@@ -1,0 +1,11 @@
+{
+    "name": "ie.mypackage.deckmanager",
+    "version": "0.0.1",
+    "displayName": "Deck Manager",
+    "description": "A package that will give cards based on parameters given.",
+    "unity": "2022.3",
+    "author": {
+      "name": "Darragh McKernan",
+      "email": "C00271651@setu.ie"
+    }
+  }
