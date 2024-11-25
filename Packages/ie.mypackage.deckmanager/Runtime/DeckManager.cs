@@ -17,9 +17,8 @@ public class DeckManager : MonoBehaviour
 
         public string FalseAnswer;//false answer
         public string FalseAnswer2;//extra false answers if needed
-        public string FalseAnswer3;
-        public string FalseAnswer4;
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,7 +31,7 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    public void addNewCards(string t_type, int t_value,string t_question,string t_answer,string t_falseAnswer, string t_falseAnswer2, string t_falseAnswer3, string t_falseAnswer4)
+    public void addNewCards(string t_type, int t_value,string t_question,string t_answer,string t_falseAnswer, string t_falseAnswer2)
     {
         Card tempCard = new Card();
         tempCard.Type = t_type;
@@ -41,8 +40,6 @@ public class DeckManager : MonoBehaviour
         tempCard.Answer = t_answer;
         tempCard.FalseAnswer = t_answer;
         tempCard.FalseAnswer2 = t_falseAnswer2;
-        tempCard.FalseAnswer3 = t_falseAnswer3;
-        tempCard.FalseAnswer4 = t_falseAnswer4;
 
         cardType1[type1Number] = tempCard;
         type1Number++;
