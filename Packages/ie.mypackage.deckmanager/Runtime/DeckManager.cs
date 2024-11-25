@@ -32,7 +32,7 @@ public class DeckManager : MonoBehaviour
 
     }
 
-    void addNewCards(string t_type, int t_value,string t_question,string t_answer,string t_falseAnswer, string t_falseAnswer2, string t_falseAnswer3, string t_falseAnswer4)
+    public void addNewCards(string t_type, int t_value,string t_question,string t_answer,string t_falseAnswer, string t_falseAnswer2, string t_falseAnswer3, string t_falseAnswer4)
     {
 
     }
