@@ -5,6 +5,7 @@ using UnityEngine;
 public class DeckManager : MonoBehaviour
 {
     public List<Card> cardType1;
+    int type1Number = 0;
 
     public struct Card
     {
@@ -15,8 +16,7 @@ public class DeckManager : MonoBehaviour
         public string Answer;//the correct answer
 
         public string FalseAnswer;//false answer
-        public string FalseAnswer1;//extra false answers if needed
-        public string FalseAnswer2;
+        public string FalseAnswer2;//extra false answers if needed
         public string FalseAnswer3;
         public string FalseAnswer4;
     }
@@ -34,6 +34,22 @@ public class DeckManager : MonoBehaviour
 
     public void addNewCards(string t_type, int t_value,string t_question,string t_answer,string t_falseAnswer, string t_falseAnswer2, string t_falseAnswer3, string t_falseAnswer4)
     {
+        Card tempCard = new Card();
+        tempCard.Type = t_type;
+        tempCard.Value = t_value;
+        tempCard.Question = t_question;
+        tempCard.Answer = t_answer;
+        tempCard.FalseAnswer = t_answer;
+        tempCard.FalseAnswer2 = t_falseAnswer2;
+        tempCard.FalseAnswer3 = t_falseAnswer3;
+        tempCard.FalseAnswer4 = t_falseAnswer4;
 
+        cardType1[type1Number] = tempCard;
+        type1Number++;
+    }
+
+    public Card getSpecifiedCard(string t_type,int t_number)
+    { 
+        return cardType1[t_number];
     }
 }
