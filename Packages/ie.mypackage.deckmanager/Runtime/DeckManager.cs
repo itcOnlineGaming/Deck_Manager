@@ -60,7 +60,6 @@ public class DeckManager : MonoBehaviour
                 indexOfSpecifiedType++;//look for the next number 
             }
         }
-
         return cardList[0];//return a default card as none were found that matched
     }
 
