@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class DeckManager : MonoBehaviour
 {
-    public List<Card> cardList;
+    public List<Card> cardList = new List<Card>();
     public List<string> allTypes;
     int type1Number = 0;
 
