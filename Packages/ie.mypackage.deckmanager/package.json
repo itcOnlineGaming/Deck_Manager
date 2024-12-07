@@ -1,6 +1,6 @@
 {
     "name": "ie.mypackage.deckmanager",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "displayName": "Deck Manager",
     "description": "A package that will give cards based on parameters given.",
     "unity": "2022.3",
