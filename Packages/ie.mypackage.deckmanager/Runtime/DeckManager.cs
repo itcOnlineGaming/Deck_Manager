@@ -33,7 +33,10 @@ public class DeckManager : MonoBehaviour
         tempCard.FalseAnswer = t_falseAnswer;
         tempCard.FalseAnswer2 = t_falseAnswer2;
 
-        cardList.Add(tempCard);
+        if (t_type != null || t_question != null || t_answer != null || t_falseAnswer != null || t_falseAnswer2 != null)
+        {
+            cardList.Add(tempCard);
+        }
     }
 
     public void generateBulkCards(List<string> t_type, List<int> t_value, List<string> t_question, List<string> t_answer, List<string> t_falseAnswer, List<string> t_falseAnswer2)
