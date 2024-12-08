@@ -68,29 +68,33 @@ public class DeckManager : MonoBehaviour
 
     public Card getRandomCardOfType(string t_type)
     {
-        int randomCard = 0;
-        bool typeFound = false;
-        int indexToCorrectType = 0;
-        int typeSize = 0;
+        List<string> questions = new List<string>();
+        List<string> correctAnswers = new List<string>();
+        List<string> wrongAnswers1 = new List<string>();
+        List<string> wrongAnswers2 = new List<string>();
 
         for (int index = 0; index < cardList.Count; index++)
         {
-            if (cardList[index].Type == t_type)//is it the correct type
+            if (cardList[index].Type == t_type)
             {
-                if(typeFound == false)//only want to find the first one
-                {
-                    indexToCorrectType = index;//how far in until we find the type
-                }
-                typeFound = true;
-
-                typeSize++;//track how many of this type there are
+                questions.Add(cardList[index].Question);
+                correctAnswers.Add(cardList[index].Answer);
+                wrongAnswers1.Add(cardList[index].FalseAnswer);
+                wrongAnswers2.Add(cardList[index].FalseAnswer2);
             }
         }
 
-        randomCard = UnityEngine.Random.Range(0, typeSize);//get a random card from the range of found cards
-        randomCard += indexToCorrectType;//add on how far into the list it is so we get the correct card
+        int randomIndex = UnityEngine.Random.Range(0, questions.Count);
 
-        return cardList[randomCard];
+        Card temp = new Card();
+        temp.Type = t_type;
+        temp.Value = randomIndex;
+        temp.Question = questions[randomIndex];
+        temp.Answer = correctAnswers[randomIndex];
+        temp.FalseAnswer = wrongAnswers1[randomIndex];
+        temp.FalseAnswer2 = wrongAnswers2[randomIndex];
+
+        return (temp);
     }
 
     public Card getRandomCard()
