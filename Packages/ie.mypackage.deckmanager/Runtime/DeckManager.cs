@@ -37,8 +37,6 @@ public class DeckManager : MonoBehaviour
 
     public void addNewCards(string t_cardType, int t_value,string t_question,string t_answer,string t_wrongAnswer, string t_wrongAnswer2)
     {
-        t_value = 0;//incase it isnt assigned
-
         Card tempCard = new Card();
         tempCard.Type = t_cardType;
         tempCard.Value = t_value;
