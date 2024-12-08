@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
@@ -10,6 +11,17 @@ public class DeckManager : MonoBehaviour
     public List<Card> cardList = new List<Card>();
     public List<string> allTypes;
     int type1Number = 0;
+    public Card defaultCard;
+
+    private void Start()
+    {
+        defaultCard.Type = "Type";
+        defaultCard.Value = 0;
+        defaultCard.Question = "Question";
+        defaultCard.Answer = "Answer";
+        defaultCard.FalseAnswer = "Incorrect";
+        defaultCard.FalseAnswer2 = "Incorrect2";
+    }
 
     public struct Card
     {
@@ -23,82 +35,109 @@ public class DeckManager : MonoBehaviour
         public string FalseAnswer2;//extra false answers if needed
     }
 
-    public void addNewCards(string t_type, int t_value,string t_question,string t_answer,string t_falseAnswer, string t_falseAnswer2)
+    public void addNewCards(string t_cardType, int t_value,string t_question,string t_answer,string t_wrongAnswer, string t_wrongAnswer2)
     {
+        t_value = 0;//incase it isnt assigned
+
         Card tempCard = new Card();
-        tempCard.Type = t_type;
+        tempCard.Type = t_cardType;
         tempCard.Value = t_value;
         tempCard.Question = t_question;
         tempCard.Answer = t_answer;
-        tempCard.FalseAnswer = t_falseAnswer;
-        tempCard.FalseAnswer2 = t_falseAnswer2;
+        tempCard.FalseAnswer = t_wrongAnswer;
+        tempCard.FalseAnswer2 = t_wrongAnswer2;
 
-        if (t_type != null || t_question != null || t_answer != null || t_falseAnswer != null || t_falseAnswer2 != null)
+        //make sure the data is valid before adding it to the list
+        if (t_cardType != null || t_question != null || t_answer != null || t_wrongAnswer != null || t_wrongAnswer2 != null)
         {
             cardList.Add(tempCard);
         }
     }
 
-    public void generateBulkCards(List<string> t_type, List<int> t_value, List<string> t_question, List<string> t_answer, List<string> t_falseAnswer, List<string> t_falseAnswer2)
+    public void generateBulkCards(List<string> t_cardType, List<int> t_value, List<string> t_question, List<string> t_answer, List<string> t_wrongAnswer, List<string> t_wrongAnswer2)
     {
-        for(int index = 0;index < t_type.Count;index++)
+        for(int index = 0;index < t_cardType.Count;index++)
         {
-            addNewCards(t_type[index], t_value[index], t_question[index], t_answer[index],t_falseAnswer[index], t_falseAnswer2[index]);
+            addNewCards(t_cardType[index], t_value[index], t_question[index], t_answer[index],t_wrongAnswer[index], t_wrongAnswer2[index]);
         }
     }
 
-    public Card getSpecifiedCard(string t_type,int t_number)
-    {
-        int indexOfSpecifiedType = 0;
-
-        for(int index = 0;index<cardList.Count;index++)
-        {
-            if (cardList[index].Type == t_type)//is it the correct type
-            {
-                if(indexOfSpecifiedType == t_number)//is it the correct number
-                {
-                    return cardList[index];
-                }
-
-                indexOfSpecifiedType++;//look for the next number 
-            }
-        }
-        return cardList[0];//return a default card as none were found that matched
-    }
-
-    public Card getRandomCardOfType(string t_type)
+    public Card getSpecifiedCard(string t_cardType, int t_number)
     {
         List<string> questions = new List<string>();
         List<string> correctAnswers = new List<string>();
-        List<string> wrongAnswers1 = new List<string>();
-        List<string> wrongAnswers2 = new List<string>();
+        List<string> falseAnswer = new List<string>();
+        List<string> falseAnswer2 = new List<string>();
 
         for (int index = 0; index < cardList.Count; index++)
         {
-            if (cardList[index].Type == t_type)
+            if (cardList[index].Type == t_cardType)
             {
                 questions.Add(cardList[index].Question);
                 correctAnswers.Add(cardList[index].Answer);
-                wrongAnswers1.Add(cardList[index].FalseAnswer);
-                wrongAnswers2.Add(cardList[index].FalseAnswer2);
+                falseAnswer.Add(cardList[index].FalseAnswer);
+                falseAnswer2.Add(cardList[index].FalseAnswer2);
             }
+        }
+
+        if(t_number > questions.Count || questions.Count == 0)
+        {
+            return defaultCard;
+        }
+
+        Card temp = new Card();
+        temp.Type = t_cardType;
+        temp.Value = t_number;
+        temp.Question = questions[t_number];
+        temp.Answer = correctAnswers[t_number];
+        temp.FalseAnswer = falseAnswer[t_number];
+        temp.FalseAnswer2 = falseAnswer2[t_number];
+
+        return temp;
+    }
+
+    public Card getRandomCardOfType(string t_cardType)
+    {
+        List<string> questions = new List<string>();//store all of the requested types data
+        List<string> correctAnswers = new List<string>();
+        List<string> falseAnswer = new List<string>();
+        List<string> falseAnswer2 = new List<string>();
+
+        for (int index = 0; index < cardList.Count; index++)
+        {
+            if (cardList[index].Type == t_cardType)
+            {
+                questions.Add(cardList[index].Question);
+                correctAnswers.Add(cardList[index].Answer);
+                falseAnswer.Add(cardList[index].FalseAnswer);
+                falseAnswer2.Add(cardList[index].FalseAnswer2);
+            }
+        }
+
+        if(questions.Count == 0) 
+        {
+            return defaultCard;
         }
 
         int randomIndex = UnityEngine.Random.Range(0, questions.Count);
 
         Card temp = new Card();
-        temp.Type = t_type;
+        temp.Type = t_cardType;
         temp.Value = randomIndex;
         temp.Question = questions[randomIndex];
         temp.Answer = correctAnswers[randomIndex];
-        temp.FalseAnswer = wrongAnswers1[randomIndex];
-        temp.FalseAnswer2 = wrongAnswers2[randomIndex];
+        temp.FalseAnswer = falseAnswer[randomIndex];
+        temp.FalseAnswer2 = falseAnswer2[randomIndex];
 
-        return (temp);
+        return temp;
     }
 
     public Card getRandomCard()
     {
+        if(cardList.Count == 0)
+        {
+            return defaultCard;
+        }
         int randomCard = UnityEngine.Random.Range(0, cardList.Count);
         return cardList[randomCard];
     }
