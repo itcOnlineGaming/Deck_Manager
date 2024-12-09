@@ -5,12 +5,18 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
-
+//read from a csv 
+//make playing card struct
+//have ability to just use one or the other card type
+//could also make a class and pass it in and just get what is needed rather than the whole card
+//need to have trello card ID in a commit to the package
+//update the demo to show the new card type
+//maybe add shuffling and grab from top of deck for the 2nd task
+//take the csv parser from TOTC and mock up a small demo using a csv file
+//yutokun is the call for the CSV parser
 public class DeckManager : MonoBehaviour
 {
     public List<Card> cardList = new List<Card>();
-    public List<string> allTypes;
-    int type1Number = 0;
     public Card defaultCard;
 
     private void Start()
