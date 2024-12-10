@@ -13,7 +13,7 @@ public class GameDemo : MonoBehaviour
     public TMP_Text Incorrect2;
 
     public DeckManager DeckManagerQuestions;//multiple decks can be made per game
-    public DeckManager DeckManagerNormal;
+    public DeckManager DeckManagerPlayingCards;
 
     public List<string> demoType;
     public List<int> demoValue;
@@ -21,18 +21,6 @@ public class GameDemo : MonoBehaviour
     public List<string> demoAnswer;
     public List<string> demoIncorrect;
     public List<string> demoIncorrect2;
-
-    public struct Card
-    {
-        public string Type;//face card subject type etc
-        public int Value;//card num or just a number to easily find//must be a unique number per type
-
-        public string Question;//the question associated with this card
-        public string Answer;//the correct answer
-
-        public string FalseAnswer;//false answer
-        public string FalseAnswer2;//extra false answers if needed
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -46,30 +34,37 @@ public class GameDemo : MonoBehaviour
             demoIncorrect.Add("Incorrect: " + index);
             demoIncorrect2.Add("Incorrect 2: " + index);
         }
-        DeckManagerQuestions.generateBulkCards(demoType, demoValue, demoQuestions, demoAnswer, demoIncorrect, demoIncorrect2);
+        DeckManagerQuestions.generateBulkQuestionCards(demoType, demoValue, demoQuestions, demoAnswer, demoIncorrect, demoIncorrect2);
 
         demoType.Clear();//make sure if you re use list that you clear them to avoid unwanted data
         demoValue.Clear();
-        demoQuestions.Clear();
-        demoAnswer.Clear();
-        demoIncorrect.Clear();
-        demoIncorrect2.Clear();
 
         for (int index = 0; index < 13; index++)//deck of cards demo
         {
             demoType.Add("Spades");
-            demoValue.Add(index+1);//add 1 as decks of cards start with 1 - ace and not 0
-            demoQuestions.Add("Not Used");//need to assign a value but dont need to use it
-            demoAnswer.Add("Not Used");
-            demoIncorrect.Add("Not Used");
-            demoIncorrect2.Add("Not Used");
+            demoValue.Add(index+1);
         }
-        DeckManagerNormal.generateBulkCards(demoType, demoValue, demoQuestions, demoAnswer, demoIncorrect, demoIncorrect2);
+        for (int index = 0; index < 13; index++)
+        {
+            demoType.Add("Hearts");
+            demoValue.Add(index + 1);
+        }
+        for (int index = 0; index < 13; index++)
+        {
+            demoType.Add("Clubs");
+            demoValue.Add(index + 1);
+        }
+        for (int index = 0; index < 13; index++)
+        {
+            demoType.Add("Diamonds");
+            demoValue.Add(index + 1);
+        }
+        DeckManagerPlayingCards.generateBulkPlayingCards(demoType, demoValue);
     }
 
     public void getNewQCard()
     {//will return any random card
-        var tempCard = DeckManagerQuestions.getRandomCard();
+        var tempCard = DeckManagerQuestions.getRandomQuestionCard();
 
         Type.text = tempCard.Type;
         Value.text = "Value "+ tempCard.Value;
@@ -81,7 +76,7 @@ public class GameDemo : MonoBehaviour
 
     public void getBadCard()
     {//will return the default card if a requested card doesnt exist
-        var tempCard = DeckManagerQuestions.getRandomCardOfType("Any Junk Value");
+        var tempCard = DeckManagerQuestions.getRandomQuestionCardOfType("Any Junk Value");
 
         Type.text = tempCard.Type;
         Value.text = "Value " + tempCard.Value;
@@ -93,7 +88,8 @@ public class GameDemo : MonoBehaviour
 
     public void getNormalCard()
     {
-        var tempCard = DeckManagerNormal.getRandomCard();
+        //return a completely random card
+        var tempCard = DeckManagerPlayingCards.getRandomPlayingCard();
 
         Type.text = tempCard.Type;
         Value.text = "Card " + tempCard.Value;
@@ -115,7 +111,39 @@ public class GameDemo : MonoBehaviour
             Value.text = "King";
         }
 
-        Question.text = " ";
+        Question.text = " ";//hide the text used during the demo as its not needed for these
+        Answer.text = " ";
+        Incorrect.text = " ";
+        Incorrect2.text = " ";
+    }
+
+    public void getShuffledCard()
+    {
+        //this will shuffle the deck if it hadnt alreay been shuffled and draw cards 1 at a tiem from the
+        //top of the deck - it will reshuffle once all cards a have been drawn
+        var tempCard = DeckManagerPlayingCards.getShuffledCard();
+
+        Type.text = tempCard.Type;
+        Value.text = "Card " + tempCard.Value;
+
+        if (tempCard.Value == 1)
+        {
+            Value.text = "Ace";
+        }
+        if (tempCard.Value == 11)
+        {
+            Value.text = "Jack";
+        }
+        if (tempCard.Value == 12)
+        {
+            Value.text = "Queen";
+        }
+        if (tempCard.Value == 13)
+        {
+            Value.text = "King";
+        }
+
+        Question.text = " ";//hide the text used during the demo as its not needed for these
         Answer.text = " ";
         Incorrect.text = " ";
         Incorrect2.text = " ";
