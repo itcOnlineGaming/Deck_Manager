@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using static PlasticGui.WorkspaceWindow.CodeReview.ReviewChanges.Summary.CommentSummaryData;
 //read from a csv 
 //make playing card struct
 //have ability to just use one or the other card type
@@ -26,6 +27,8 @@ public class DeckManager : MonoBehaviour
     int currentShuffledCard = 0;//the current shuffled card we are on in the list
     bool deckShuffled = false;//does the deck need to be shuffled
 
+    
+
     private void Start()
     {
         defaultQuestionCard.Type = "Default Type";
@@ -37,6 +40,45 @@ public class DeckManager : MonoBehaviour
 
         defaultPlayingCard.Type = "Default Type";
         defaultPlayingCard.Value = 0;
+    }
+
+    public List<List<string>> loadedCSVData;
+    public void takeInCSVFile(TextAsset t_CSVFile)
+    {
+        if (t_CSVFile != null)
+        {
+            QuestionCard tempCard = defaultQuestionCard;
+
+            loadedCSVData = yutokun.CSVParser.LoadFromString(t_CSVFile.text);
+
+            int value = 0;
+            
+            //loop through every entry from top to bottom
+            for(int index = 0;index < loadedCSVData.Count;index++)
+            {              
+                //at each entry move across each column to get all the data
+                tempCard.Type = loadedCSVData[index][0];
+                try
+                {
+                    value = int.Parse(loadedCSVData[index][1]);
+                }
+                catch (FormatException)
+                {
+                    Debug.LogError("INVALID CSV ENTRY - MUST BE AN INT ONLY");
+                }
+                tempCard.Value = value;
+                tempCard.Question = loadedCSVData[index][2];
+                tempCard.Answer = loadedCSVData[index][3];
+                tempCard.FalseAnswer = loadedCSVData[index][4];
+                tempCard.FalseAnswer2 = loadedCSVData[index][5];
+
+                questionCardList.Add(tempCard);//add this card to the list
+            }
+        }
+        else
+        {
+            Debug.LogError("File is invalid");
+        }
     }
 
     public struct QuestionCard

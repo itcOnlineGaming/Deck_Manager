@@ -22,22 +22,27 @@ public class GameDemo : MonoBehaviour
     public List<string> demoIncorrect;
     public List<string> demoIncorrect2;
 
+    public TextAsset exampleCSV;
+
     // Start is called before the first frame update
     void Start()
     {
-        for(int index = 0;index < 10;index++)
-        {//create lists of all of the data you want your cards to have
-            demoType.Add("Type of Card: " + index);
-            demoValue.Add(index);
-            demoQuestions.Add("Question: " + index);
-            demoAnswer.Add("Answer: " + index);
-            demoIncorrect.Add("Incorrect: " + index);
-            demoIncorrect2.Add("Incorrect 2: " + index);
-        }
-        DeckManagerQuestions.generateBulkQuestionCards(demoType, demoValue, demoQuestions, demoAnswer, demoIncorrect, demoIncorrect2);
+        //for(int index = 0;index < 10;index++)
+        //{//create lists of all of the data you want your cards to have
+        //    demoType.Add("Type of Card: " + index);
+        //    demoValue.Add(index);
+        //    demoQuestions.Add("Question: " + index);
+        //    demoAnswer.Add("Answer: " + index);
+        //    demoIncorrect.Add("Incorrect: " + index);
+        //    demoIncorrect2.Add("Incorrect 2: " + index);
+        //}
+        //DeckManagerQuestions.generateBulkQuestionCards(demoType, demoValue, demoQuestions, demoAnswer, demoIncorrect, demoIncorrect2);
 
-        demoType.Clear();//make sure if you re use list that you clear them to avoid unwanted data
-        demoValue.Clear();
+        //instead of generating cards using bulk like the above code you can simply pass in a .csv file with your data
+        DeckManagerQuestions.takeInCSVFile(exampleCSV);
+
+        //demoType.Clear();//make sure if you re use list that you clear them to avoid unwanted data
+        //demoValue.Clear();
 
         for (int index = 0; index < 13; index++)//deck of cards demo
         {
@@ -76,6 +81,9 @@ public class GameDemo : MonoBehaviour
 
     public void getBadCard()
     {//will return the default card if a requested card doesnt exist
+        //var csvFile = Resources.Load<TextAsset>("Assets/ExampleCSV.csv"); 
+        //DeckManagerQuestions.takeInCSVFile(exampleCSV);
+
         var tempCard = DeckManagerQuestions.getRandomQuestionCardOfType("Any Junk Value");
 
         Type.text = tempCard.Type;

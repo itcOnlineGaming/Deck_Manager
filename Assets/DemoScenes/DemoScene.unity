@@ -434,6 +434,7 @@ MonoBehaviour:
   demoAnswer: []
   demoIncorrect: []
   demoIncorrect2: []
+  exampleCSV: {fileID: 4900000, guid: 0092ee26f395e204e9d4a50727987048, type: 3}
 --- !u!4 &347831371
 Transform:
   m_ObjectHideFlags: 0
